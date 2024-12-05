@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">UTS_PPPB_BOOKS_CRUD</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="TextDesc">Achieve your fitness goals with personalized workout plans, progress tracking, and expert guidance—all in one easy-to-use fitness app!</string>
+    <string name="Desc">Oscar Wilde’s only novel is the dreamlike story of a young man who sells his soul for eternal youth and beauty.</string>
+</resources>

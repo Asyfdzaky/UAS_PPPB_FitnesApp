@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Shadow layer -->
+    <item android:bottom="4dp" android:right="4dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/grey" /> <!-- Light gray shadow -->
+            <corners android:bottomRightRadius="20dp"
+                android:bottomLeftRadius="10dp"
+                android:topRightRadius="20dp"/><!-- Adjust corner radius here -->
+        </shape>
+    </item>
+
+    <!-- Main button layer -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/yellow" /> <!-- White background -->
+            <corners android:bottomRightRadius="20dp"
+                android:bottomLeftRadius="10dp"
+                android:topRightRadius="20dp"/>
+        </shape>
+    </item>
+</layer-list>

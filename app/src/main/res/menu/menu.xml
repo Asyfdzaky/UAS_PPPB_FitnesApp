@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/homeFragment"
+        android:title="Latihan"
+        android:icon="@drawable/img_3"
+        android:orderInCategory="100"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/bookmarkFragment"
+        android:title="Bookmark"
+        android:icon="@drawable/baseline_collections_bookmark_24"
+        android:orderInCategory="100"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/accountFragment"
+        android:title="Account"
+        android:icon="@drawable/baseline_account_box_24"
+        android:orderInCategory="100"
+        app:showAsAction="always" />
+</menu>
