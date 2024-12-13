@@ -30,7 +30,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Welcome To Fitness App "
+                android:text="Welcome To Fitness App"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -40,7 +40,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_margin="10dp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="4dp"
         app:cardElevation="4dp">
@@ -128,7 +128,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Anda Login Sebagai"
+                        android:text="Email"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -137,7 +137,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="ROLE"
+                        android:text="user@example.com"
                         android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -145,14 +145,14 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_logout"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        app:cornerRadius="5dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/shape"
-        android:backgroundTint="@color/blue"
+        android:backgroundTint="@color/red"
         android:text="Keluar"
         android:textColor="@color/white" />
 

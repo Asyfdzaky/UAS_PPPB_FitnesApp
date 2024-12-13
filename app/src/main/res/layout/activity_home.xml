@@ -24,8 +24,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="@drawable/shape_nav"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"
+        app:itemActiveIndicatorStyle="@style/BottomNavActiveIndicator"
+        app:itemIconTint="@drawable/item_icon"
+        app:itemTextColor="@drawable/item_icon"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/menu" />

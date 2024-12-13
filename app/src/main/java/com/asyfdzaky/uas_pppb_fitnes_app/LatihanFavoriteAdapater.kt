@@ -4,13 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.asyfdzaky.uas_pppb_fitnes_app.Model.Latihan.Latihan
 import com.asyfdzaky.uas_pppb_fitnes_app.Model.Room.LatihanTable
 import com.asyfdzaky.uas_pppb_fitnes_app.databinding.ItemBookmarkBinding
-
+import com.asyfdzaky.uas_pppb_fitnes_app.databinding.ItemDialogBinding
 
 
 class LatihanFavoriteAdapater(
@@ -39,7 +40,24 @@ class LatihanFavoriteAdapater(
 
                 // Handle delete button click
                 delete.setOnClickListener {
-                    deleteAction(data)
+                    val dialogBinding =
+                        ItemDialogBinding.inflate(LayoutInflater.from(itemView.context))
+                    val dialog = AlertDialog.Builder(itemView.context)
+                        .setView(dialogBinding.root)
+                        .create()
+                    dialogBinding.dialogTitle.text = "Konfirmasi Hapus"
+                    dialogBinding.dialogMessage.text =
+                        "Apakah Anda yakin ingin menghapus latihan ${data.name}?"
+
+                    dialogBinding.btnConfirm.setOnClickListener {
+                        deleteAction(data)
+
+                        dialog.dismiss()
+                    }
+                    dialogBinding.btnCancel.setOnClickListener {
+                        dialog.dismiss()
+                    }
+                    dialog.show()
                 }
                 itemView.setOnClickListener{
                     LatihanDetail(data)

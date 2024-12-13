@@ -25,6 +25,11 @@
             android:text="Favorite Exercise"
             android:textSize="18sp" />
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/gold" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

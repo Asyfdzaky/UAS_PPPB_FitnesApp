@@ -3,12 +3,14 @@ package com.asyfdzaky.uas_pppb_fitnes_app.Admin
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.asyfdzaky.shareprefence.PrefManager
 import com.asyfdzaky.uas_pppb_fitnes_app.Model.Latihan.Latihan
 import com.asyfdzaky.uas_pppb_fitnes_app.Network.ApiClient
 import com.asyfdzaky.uas_pppb_fitnes_app.databinding.ActivityAdminBinding
+import com.asyfdzaky.uas_pppb_fitnes_app.databinding.ItemDialogBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -38,8 +40,7 @@ class AdminActivity : AppCompatActivity() {
             )
         }
         binding.btnLogout.setOnClickListener{
-            prefmanager.clear()
-            finish()
+            showLogoutDialog()
 
         }
     }
@@ -94,4 +95,33 @@ class AdminActivity : AppCompatActivity() {
             }
         })
     }
+
+    private fun showLogoutDialog() {
+        // Inflate the custom dialog layout using ViewBinding
+        val builder = AlertDialog.Builder(this)
+        val inflate = this.layoutInflater
+        val binding = ItemDialogBinding.inflate(inflate)
+        val dialog = builder.setView(binding.root)
+            .setCancelable(false) // Make dialog non-cancelable by tapping outside
+            .create()
+
+        with(binding){
+            dialogTitle.text = "Logout"
+            dialogMessage.text = "Apakah Anda yakin ingin logout?"
+            btnConfirm.text = "Ya"
+            btnConfirm.setOnClickListener {
+                prefmanager.clear()
+                finish()
+            }
+            btnCancel.text = "Tidak"
+            btnCancel.setOnClickListener {
+                dialog.dismiss()
+            }
+        }
+
+        dialog.show()
+
+    }
+
+
 }

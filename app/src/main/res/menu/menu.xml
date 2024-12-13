@@ -5,6 +5,7 @@
         android:id="@+id/homeFragment"
         android:title="Latihan"
         android:icon="@drawable/img_3"
+        android:iconTint="@color/gold"
         android:orderInCategory="100"
         app:showAsAction="always" />
     <item
@@ -18,5 +19,6 @@
         android:title="Account"
         android:icon="@drawable/baseline_account_box_24"
         android:orderInCategory="100"
+        android:iconTint="@color/gold"
         app:showAsAction="always" />
 </menu>

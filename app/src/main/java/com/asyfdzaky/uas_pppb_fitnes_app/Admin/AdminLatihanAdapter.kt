@@ -1,13 +1,17 @@
 package com.asyfdzaky.uas_pppb_fitnes_app.Admin
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.asyfdzaky.uas_pppb_fitnes_app.Model.Latihan.Latihan
 import com.asyfdzaky.uas_pppb_fitnes_app.Network.ApiService
+import com.asyfdzaky.uas_pppb_fitnes_app.databinding.ItemDialogBinding
 import com.asyfdzaky.uas_pppb_fitnes_app.databinding.ItemLatihanAdminBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -28,16 +32,7 @@ class AdminLatihanAdapter(
 
                 tvWorkoutTitle.text = data.name
 
-                itemView.setOnClickListener{
-//                    val intent = Intent(itemView.context, AdminDetailActivity::class.java)
-//                    intent.putExtra("id", data.id)
-//                    intent.putExtra("name", data.name)
-//                    intent.putExtra("jumlahLatihan", data.jumlahLatihan)
-//                    intent.putExtra("JumlahRepetisi", data.jumlahRepetisi)
-//                    data.details.forEachIndexed { index, detail ->
-//                        intent.putExtra("details$index", detail)
-//                    }
-//                    itemView.context.startActivity(intent)
+                itemView.setOnClickListener {
                     onClickLatihan(data)
                 }
 
@@ -55,33 +50,51 @@ class AdminLatihanAdapter(
                     itemView.context.startActivity(intentEdit)
                 }
                 btnDelete.setOnClickListener {
-                    val response = data.id?.let { it1 -> client.deleteLatihan(it1) }
-                    response?.enqueue(object : Callback<Latihan> {
-                        override fun onResponse(
-                            call: Call<Latihan>,
-                            response: Response<Latihan>
-                        ) {
-                            if (response.isSuccessful) {
-                                Toast.makeText(
-                                    itemView.context,
-                                    "data latihan ${data.name} berhasil dihapus",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                val position = adapterPosition
-                                if (position != RecyclerView.NO_POSITION) {
-                                    removeItem(position)
-                                }
-                            } else {
-                                Log.e("API Error", "Response not successful or body is null")
-                            }
-                        }
+                    val dialogBinding =
+                        ItemDialogBinding.inflate(LayoutInflater.from(itemView.context))
+                    val dialog = AlertDialog.Builder(itemView.context)
+                        .setView(dialogBinding.root)
+                        .create()
+                    dialogBinding.dialogTitle.text = "Konfirmasi Hapus"
+                    dialogBinding.dialogMessage.text =
+                        "Apakah Anda yakin ingin menghapus latihan ${data.name}?"
 
-                        override fun onFailure(call: Call<Latihan>, t: Throwable) {
-                            Toast.makeText(itemView.context, "koneksi eror", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                    })
+                    dialogBinding.btnConfirm.setOnClickListener {
+                        val response = data.id?.let { it1 -> client.deleteLatihan(it1) }
+                        response?.enqueue(object : Callback<Latihan> {
+                            override fun onResponse(
+                                call: Call<Latihan>,
+                                response: Response<Latihan>
+                            ) {
+                                if (response.isSuccessful) {
+                                    Toast.makeText(
+                                        itemView.context,
+                                        "data latihan ${data.name} berhasil dihapus",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    val position = adapterPosition
+                                    if (position != RecyclerView.NO_POSITION) {
+                                        removeItem(position)
+                                    }
+                                    dialog.dismiss()
+                                } else {
+                                    Log.e("API Error", "Response not successful or body is null")
+                                }
+                            }
+
+                            override fun onFailure(call: Call<Latihan>, t: Throwable) {
+                                Toast.makeText(itemView.context, "koneksi eror", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                        })
+                    }
+                    dialogBinding.btnCancel.setOnClickListener {
+                        dialog.dismiss() // Dismiss the dialog when canceled
+                    }
+
+                    dialog.show() // Show the dialog
                 }
+
             }
 
         }
@@ -102,6 +115,7 @@ class AdminLatihanAdapter(
         holder.bind(listLatihan[position])
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateData(newList: List<Latihan>) {
         listLatihan.clear()
         listLatihan.addAll(newList)
@@ -113,5 +127,54 @@ class AdminLatihanAdapter(
         notifyItemRemoved(position)
         notifyItemRangeRemoved(position, listLatihan.size)
     }
+
+//    private fun showDeleteConfirmationDialog(context: Context, latihan: Latihan) {
+//        // Inflate the custom dialog layout
+//        val dialogBinding = ItemDialogBinding.inflate(LayoutInflater.from(context))
+//
+//        val dialog = AlertDialog.Builder(context)
+//            .setView(dialogBinding.root)
+//            .create()
+//
+//        dialogBinding.dialogTitle.text = "Konfirmasi Hapus"
+//        dialogBinding.dialogMessage.text =
+//            "Apakah Anda yakin ingin menghapus latihan ${latihan.name}?"
+//
+//        dialogBinding.btnConfirm.setOnClickListener {
+//            // Perform delete action here
+//            val response = latihan.id?.let { it1 -> client.deleteLatihan(it1) }
+//            response?.enqueue(object : Callback<Latihan> {
+//                override fun onResponse(
+//                    call: Call<Latihan>,
+//                    response: Response<Latihan>
+//                ) {
+//                    if (response.isSuccessful) {
+//                        Toast.makeText(
+//                            context,
+//                            "Data latihan ${latihan.name} berhasil dihapus",
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+//                        val position = adapterPosition
+//                        if (position != RecyclerView.NO_POSITION) {
+//                            removeItem(position)
+//                        }
+//                        dialog.dismiss() // Dismiss the dialog after deletion
+//                    } else {
+//                        Log.e("API Error", "Response not successful or body is null")
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<Latihan>, t: Throwable) {
+//                    Toast.makeText(context, "Koneksi error", Toast.LENGTH_SHORT).show()
+//                }
+//            })
+//        }
+//
+//        dialogBinding.btnCancel.setOnClickListener {
+//            dialog.dismiss() // Dismiss the dialog when canceled
+//        }
+//
+//        dialog.show() // Show the dialog
+//    }
 
 }

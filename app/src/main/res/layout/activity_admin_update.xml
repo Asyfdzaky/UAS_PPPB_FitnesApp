@@ -139,9 +139,10 @@
 
 
     <!-- Submit Button -->
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_update_latihan"
         android:layout_width="match_parent"
+        app:cornerRadius="5dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:backgroundTint="@color/blue"

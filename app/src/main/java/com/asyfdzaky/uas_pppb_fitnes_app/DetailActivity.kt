@@ -2,21 +2,22 @@ package com.asyfdzaky.uas_pppb_fitnes_app
 
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.enableEdgeToEdge
+import android.view.LayoutInflater
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.asyfdzaky.uas_pppb_fitnes_app.Model.Room.LatihanTable
 import com.asyfdzaky.uas_pppb_fitnes_app.databaseLokal.LatihanDao
 import com.asyfdzaky.uas_pppb_fitnes_app.databaseLokal.LatihanRoomDatabase
 import com.asyfdzaky.uas_pppb_fitnes_app.databinding.ActivityDetailBinding
+import com.asyfdzaky.uas_pppb_fitnes_app.databinding.ItemDialogBinding
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
     private lateinit var executorService: ExecutorService
-    private lateinit var LatihanDao : LatihanDao
+    private lateinit var LatihanDao: LatihanDao
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
@@ -25,7 +26,7 @@ class DetailActivity : AppCompatActivity() {
         val latihanRoomDatabase = LatihanRoomDatabase.getDatabase(applicationContext)
         LatihanDao = latihanRoomDatabase?.latihanDao()!!
 
-        with(binding){
+        with(binding) {
 
             tvTitle.text = intent.getStringExtra("name")
             tvWorkoutTitle1.text = intent.getStringExtra("details1")
@@ -39,27 +40,15 @@ class DetailActivity : AppCompatActivity() {
             tvWorkoutDesc4.text = intent.getStringExtra("jumlahRepetisi")
             tvWorkoutDesc5.text = intent.getStringExtra("jumlahRepetisi")
 
-            ivBack.setOnClickListener{
+            ivBack.setOnClickListener {
                 finish()
             }
             btnFavorite.setOnClickListener {
-                val latihan = LatihanTable(
-                    id = intent.getStringExtra("id").toString(), // Pass the id as String
-                    name = intent.getStringExtra("name").toString(),
-                    jumlahLatihan = intent.getStringExtra("jumlahLatihan").toString(),
-                    jumlahRepetisi = intent.getStringExtra("jumlahRepetisi").toString(),
-                    details = listOf(
-                        intent.getStringExtra("details1").toString(),
-                        intent.getStringExtra("details2").toString(),
-                        intent.getStringExtra("details3").toString(),
-                        intent.getStringExtra("details4").toString(),
-                        intent.getStringExtra("details5").toString()
-                    ) // Convert list to comma-separated string
-                )
-                insert(latihan)
+                showFavoriteDialog()
             }
         }
     }
+
     private fun insert(latihan: LatihanTable) {
         // Insert the latihan into the database in a background thread
         executorService.execute {
@@ -77,5 +66,44 @@ class DetailActivity : AppCompatActivity() {
                 })
             }
         }
+    }
+
+    private fun showFavoriteDialog() {
+        val dialogBinding = ItemDialogBinding.inflate(LayoutInflater.from(this))
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogBinding.root)
+            .create()
+        dialogBinding.dialogIcon.setImageResource(R.drawable.baseline_favorite_24)
+        dialogBinding.dialogTitle.text = "Tambah ke Favorit"
+        dialogBinding.dialogMessage.text =
+            "Apakah Anda yakin ingin menambahkan latihan ini ke favorit?"
+
+        dialogBinding.btnConfirm.setOnClickListener {
+            // Insert the item into the database
+            val latihan = LatihanTable(
+                id = intent.getStringExtra("id").toString(),
+                name = intent.getStringExtra("name").toString(),
+                jumlahLatihan = intent.getStringExtra("jumlahLatihan").toString(),
+                jumlahRepetisi = intent.getStringExtra("jumlahRepetisi").toString(),
+                details = listOf(
+                    intent.getStringExtra("details1").toString(),
+                    intent.getStringExtra("details2").toString(),
+                    intent.getStringExtra("details3").toString(),
+                    intent.getStringExtra("details4").toString(),
+                    intent.getStringExtra("details5").toString()
+                )
+            )
+            insert(latihan)
+            dialog.dismiss() // Dismiss the dialog after confirming
+            Toast.makeText(this, "Latihan berhasil ditambahkan ke favorit", Toast.LENGTH_SHORT)
+                .show()
+        }
+
+        dialogBinding.btnCancel.setOnClickListener {
+            dialog.dismiss() // Dismiss the dialog if canceled
+        }
+
+        dialog.show() // Show the dialog
     }
 }

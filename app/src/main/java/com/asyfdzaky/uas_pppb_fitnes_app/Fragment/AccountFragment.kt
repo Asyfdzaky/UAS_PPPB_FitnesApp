@@ -5,10 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import com.asyfdzaky.shareprefence.PrefManager
 import com.asyfdzaky.uas_pppb_fitnes_app.R
 import com.asyfdzaky.uas_pppb_fitnes_app.databinding.FragmentAccountBinding
 import com.asyfdzaky.uas_pppb_fitnes_app.databinding.FragmentHomeBinding
+import com.asyfdzaky.uas_pppb_fitnes_app.databinding.ItemDialogBinding
 import java.util.concurrent.ExecutorService
 
 // TODO: Rename parameter arguments, choose names that match
@@ -26,6 +28,7 @@ class AccountFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var binding:  FragmentAccountBinding
+    private lateinit var prefManager: PrefManager
 
 
 
@@ -44,20 +47,46 @@ class AccountFragment : Fragment() {
         binding = FragmentAccountBinding.inflate(inflater, container, false)
         val prefManager = PrefManager.getInstance(requireContext())
         val username = prefManager.getUsername()
-        val role = prefManager.getRole()
+        val email = prefManager.getEmail()
         with(binding){
 
             tvNama.text = username
-            tvRole.text = role
+            tvRole.text = email
 
             btnLogout.setOnClickListener{
-                prefManager.clear()
-                requireActivity().finish()
+                showLogoutDialog()
             }
 
         }
         return (binding.root)
     }
+    private fun showLogoutDialog() {
+        // Inflate the custom dialog layout using ViewBinding
+        val builder = AlertDialog.Builder(requireActivity())
+        val inflate = requireActivity().layoutInflater
+        val binding = ItemDialogBinding.inflate(inflate)
+        val dialog = builder.setView(binding.root)
+            .setCancelable(false) // Make dialog non-cancelable by tapping outside
+            .create()
+
+        with(binding){
+            dialogTitle.text = "Logout"
+            dialogMessage.text = "Apakah Anda yakin ingin logout?"
+            btnConfirm.text = "Ya"
+            btnConfirm.setOnClickListener {
+                prefManager.clear()
+                requireActivity().finish()
+            }
+            btnCancel.text = "Tidak"
+            btnCancel.setOnClickListener {
+                dialog.dismiss()
+            }
+        }
+
+        dialog.show()
+
+    }
+
 
     companion object {
         /**

@@ -42,6 +42,7 @@ class LoginActivity : AppCompatActivity() {
                                     prefManager.saveUsername(Username.text.toString())
                                     prefManager.savePassword(Password.text.toString())
                                     prefManager.saveRole(i.role)
+                                    prefManager.saveEmail(i.email)
                                     checkLoginStatus()
                                     finish()
                                 }
