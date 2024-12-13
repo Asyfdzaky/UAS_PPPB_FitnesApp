@@ -63,6 +63,7 @@ class AccountFragment : Fragment() {
     private fun showLogoutDialog() {
         // Inflate the custom dialog layout using ViewBinding
         val builder = AlertDialog.Builder(requireActivity())
+        val prefManager = PrefManager.getInstance(requireContext())
         val inflate = requireActivity().layoutInflater
         val binding = ItemDialogBinding.inflate(inflate)
         val dialog = builder.setView(binding.root)

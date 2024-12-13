@@ -132,13 +132,19 @@
 
             <!-- Login Text -->
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/RegisterText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="Already have an account? Login" />
 
         </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
 
     </androidx.cardview.widget.CardView>
 
